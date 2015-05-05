@@ -1,0 +1,6 @@
+name = Accordion Entity Reference
+description = Adds a Accordion field formatter for Entity Reference fields
+core = 7.x
+
+dependencies[] = entityreference
+
