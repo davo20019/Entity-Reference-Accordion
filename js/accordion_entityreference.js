@@ -1,7 +1,7 @@
 (function($) {
   Drupal.behaviors.accordion_entityreference = {
     attach: function (context, settings) {
-      console.log(settings.accordion_entityreference);
+
       if ($.type(settings.accordion_entityreference) !== 'undefined') {
         var accordion = settings.accordion_entityreference;
         $.each(accordion, function(index, element) {
