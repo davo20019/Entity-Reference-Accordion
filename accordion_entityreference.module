@@ -1,5 +1,4 @@
 <?php
-//module_load_include('inc', 'accordion_entityreference', 'accordion_entityreference.pages');
 /**
  * @file
  * Provides an Accordion formatter for Entity Reference fields.
@@ -302,9 +301,11 @@ function accordion_add($id = NULL, $header_class = 'group-header', $content_clas
 
     // JavaScript settings
     $js_settings = array(
-      'accordion_id'     => $id,
-      'accordion_header' => '.' . $header_class,
-      'accordion_content' => '.' . $content_class,
+      $id => array(
+        'accordion_id' => $id,
+        'accordion_header' => '.' . $header_class,
+        'accordion_content' => '.' . $content_class,
+      ),
     );
 
     // Add settings js

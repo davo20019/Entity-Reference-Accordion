@@ -1,38 +1,39 @@
 (function($) {
   Drupal.behaviors.accordion_entityreference = {
     attach: function (context, settings) {
+      console.log(settings.accordion_entityreference);
+      if ($.type(settings.accordion_entityreference) !== 'undefined') {
+        var accordion = settings.accordion_entityreference;
+        $.each(accordion, function(index, element) {
+          //Initialization
+          var id = element.accordion_id;
+          var h  = element.accordion_header;
+          var content = element.accordion_content;
+          var htmlId = element.htmlId;
+          var tabActive = false;
+          var panel = false;
+          var hash = false;
 
-      if ($.type(settings.accordion_entityreference) !== 'undefined' &&
-          $.type(settings.accordion_entityreference.accordion_id) !== 'undefined') {
+          // //Define tab active
+          if (htmlId != undefined) {
+            hash = $(htmlId).parents(content).attr('aria-labelledby');
+          }
 
-        //Initialization
-        var id = settings.accordion_entityreference.accordion_id;
-        var h  = settings.accordion_entityreference.accordion_header;
-        var content = settings.accordion_entityreference.accordion_content;
-        var htmlId = settings.accordion_entityreference.htmlId;
-        var tabActive = false;
-        var panel = false;
-        var hash = false;
+          //Define accordion
+          $("#"+id).accordion({
+            collapsible: true,
+            active: tabActive,
+            header: h
+          });
 
+          //if exist defined header
+          if (hash != false && hash != undefined) {
 
-        // //Define tab active
-        if (htmlId != undefined) {
-          hash = $(htmlId).parents(content).attr('aria-labelledby');
-        }
+            //Open the accordion for hash
+            $('#'+hash).trigger( "click" );
+          }
 
-        //Define accordion
-        $("#"+id).accordion({
-          collapsible: true,
-          active: tabActive,
-          header: h
         });
-
-        //if exist defined header
-        if (hash != false && hash != undefined) {
-
-          //Open the accordion for hash
-          $('#'+hash).trigger( "click" );
-        }
       }
     }
  }
