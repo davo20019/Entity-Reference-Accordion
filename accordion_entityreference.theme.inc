@@ -18,7 +18,7 @@ function template_process_accordion_entityreference(&$vars) {
   $settings =& $vars['settings'];
   $settings['attributes'] = $attributes;
 
-  accordion_add($settings['attributes']['id']);
+  accordion_add($settings['attributes']['id'], $settings['header'], $settings['content']);
 
   $vars['accordion'] += array(
     '#theme' => 'accordion',
@@ -67,7 +67,7 @@ function theme_accordion_entitylist($vars) {
     );
     foreach ($items as $delta => $item) {
       $output['items'][$delta] = array(
-        '#theme' => 'flexslider_list_item',
+        '#theme' => 'accordion_list_entity',
         '#item' => $item['element'],
       );
     }

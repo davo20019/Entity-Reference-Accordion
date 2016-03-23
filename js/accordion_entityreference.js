@@ -8,6 +8,7 @@
         //Initialization
         var id = settings.accordion_entityreference.accordion_id;
         var h  = settings.accordion_entityreference.accordion_header;
+        var content = settings.accordion_entityreference.accordion_content;
         var htmlId = settings.accordion_entityreference.htmlId;
         var tabActive = false;
         var panel = false;
@@ -16,7 +17,7 @@
 
         // //Define tab active
         if (htmlId != undefined) {
-          hash = $(htmlId).parents('.group-inner-section').attr('aria-labelledby');
+          hash = $(htmlId).parents(content).attr('aria-labelledby');
         }
 
         //Define accordion

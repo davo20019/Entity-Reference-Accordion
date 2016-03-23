@@ -4,22 +4,7 @@
  * @file
  * Provides an Accordion formatter for Entity Reference fields.
  */
-/**
- * Implements hook_menu().
- */
-function accordion_entityreference_menu() {
-  $items = array();
-  /* Menu inner to activate modal windows on Plans*/
-  $items['accordion/%ctools_js/%'] = array(
-      'title' => t('Terms and Conditions'),
-      'page arguments' => array(1, 2),
-      'page callback' => 'get_info',
-      'access callback' => TRUE,
-      'type' => MENU_NORMAL_ITEM,
-      'file' => 'accordion_entityreference.pages.inc',
-  );
-  return $items;
-}
+
 /**
  * Implements hook_theme().
  */
@@ -86,7 +71,9 @@ function accordion_entityreference_field_formatter_info() {
       'description' => t('Displays the rendered entities in an Accordion.'),
       'field types' => array('entityreference'),
       'settings' => array(
-        'view_mode' => ''
+        'view_mode' => '',
+        'header' => '',
+        'content' => '',
       ),
     ),
   );
@@ -121,6 +108,17 @@ function accordion_entityreference_field_formatter_settings_form($field,
       '#options' => $options,
       '#title' => t('Accordion view mode'),
       '#default_value' => $settings['view_mode'],
+    );
+    $form['header'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Header wrapper class'),
+      '#default_value' => 'group-header',
+      '#default_value' => $settings['header'],
+    );
+    $form['content'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Content wrapper class'),
+      '#default_value' => $settings['content'],
     );
   }
 
@@ -294,7 +292,7 @@ function accordion_entityreference_preprocess_accordion_list_item(&$vars) {
  *  ID Attribute for Accordion container
  *
  */
-function accordion_add($id = NULL) {
+function accordion_add($id = NULL, $header_class = 'group-header', $content_class = 'group-inner-section') {
 
   // Add library accordion
   drupal_add_library('system', 'ui.accordion');
@@ -305,7 +303,8 @@ function accordion_add($id = NULL) {
     // JavaScript settings
     $js_settings = array(
       'accordion_id'     => $id,
-      'accordion_header' => '.group-header'
+      'accordion_header' => '.' . $header_class,
+      'accordion_content' => '.' . $content_class,
     );
 
     // Add settings js
@@ -318,45 +317,4 @@ function accordion_add($id = NULL) {
   $options['scope'] = 'footer';
   $path = drupal_get_path('module', 'accordion_entityreference');
   drupal_add_js($path. '/js/accordion_entityreference.js', $options);
-}
-
-/**
- * Implements hook_process_HOOK().
- *
- * @see template_process_accordion_list_item().
- */
-function accordion_entityreference_process_accordion_list_item(&$vars) {
-
-  // if (isset($vars['settings']['#optionset'])) {
-  //   // Unhide, as template_process_flexslider_list_item is now done.
-  //   $vars['settings']['optionset'] = $vars['settings']['#optionset'];
-  //   unset($vars['settings']['#optionset']);
-
-  //   // Do our own implementation of what template_process_flexslider_list_item() does.
-  //   $settings =& $vars['settings'];
-  //   $attributes =& $settings['attributes'];
-  //   $caption =& $vars['caption'];
-  //   $caption = $vars['item']['caption'];
-
-  //   if (isset($settings['optionset']->options['controlNav']) && $settings['optionset']->options['controlNav'] === 'thumbnails') {
-  //     if (isset($vars['item']['thumbnail']) && !empty($vars['item']['thumbnail'])) {
-  //       $thumbnail_url = image_style_url($settings['optionset']->imagestyle_thumbnail, $vars['item']['thumbnail']);
-
-  //       $attributes['data-thumb'] = $thumbnail_url;
-  //     }
-  //   }
-
-  //   if (isset($settings['optionset']->options['thumbCaptions']) && $settings['optionset']->options['thumbCaptions'] && !empty($caption)) {
-  //     $attributes['data-thumbcaption'] = $caption;
-
-  //     // Prevent captions from appearing in the slider.
-  //     if (isset($settings['optionset']->options['thumbCaptionsBoth']) && $settings['optionset']->options['thumbCaptionsBoth'] === FALSE) {
-  //       $caption = '';
-  //     }
-  //   }
-
-  //   if (!empty($caption)) {
-  //     $caption = '<div class="flex-caption">' . $caption . '</div>';
-  //   }
-  // }
 }
